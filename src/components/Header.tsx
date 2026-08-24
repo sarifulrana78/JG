@@ -4,12 +4,17 @@ import Link from "next/link";
 import { Search, MapPin, ShoppingCart, Menu, ChevronDown, User } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useState, useEffect } from "react";
+import { useCartStore } from "@/lib/store";
 
 export default function Header() {
   const { data: session } = useSession();
   const [scrolled, setScrolled] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const cartItems = useCartStore((state) => state.cartItems);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
@@ -44,6 +49,9 @@ export default function Header() {
             <option className="text-black">All</option>
             <option className="text-black">Gadgets</option>
             <option className="text-black">Fashion</option>
+            <option className="text-black">Lifestyle</option>
+            <option className="text-black">Gifts</option>
+            <option className="text-black">Stationery</option>
           </select>
           <input 
             type="text" 
@@ -100,15 +108,15 @@ export default function Header() {
         </div>
 
         {/* Cart - Modern Badge */}
-        <div className="flex items-center cursor-pointer px-3 py-2 rounded-lg hover:bg-white/10 transition-colors group relative">
+        <Link href="/cart" className="flex items-center cursor-pointer px-3 py-2 rounded-lg hover:bg-white/10 transition-colors group relative">
           <div className="relative flex items-center justify-center">
             <ShoppingCart size={28} className="text-white group-hover:text-amazon-orange transition-colors" />
             <span className="absolute -top-2 -right-2 bg-amazon-orange text-black font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
-              0
+              {isMounted ? totalItems : 0}
             </span>
           </div>
           <span className="text-sm font-bold text-white hidden sm:block ml-2 group-hover:text-amazon-orange transition-colors">Cart</span>
-        </div>
+        </Link>
 
       </div>
 
