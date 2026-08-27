@@ -1,17 +1,84 @@
 import Link from "next/link";
-import { ChevronUp, Facebook, Twitter, Instagram, Youtube, Mail, Send } from "lucide-react";
+import { ChevronUp, Mail, Send, MapPin, Phone, CreditCard, Smartphone, ShieldCheck, Truck, HeadphonesIcon } from "lucide-react";
+
+// Inline social icons (removed from lucide-react)
+const FacebookIcon = ({ size = 16, className = "" }) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+const TwitterIcon = ({ size = 16, className = "" }) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+const InstagramIcon = ({ size = 16, className = "" }) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+  </svg>
+);
+const YoutubeIcon = ({ size = 16, className = "" }) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+    <polygon fill="#000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
+  </svg>
+);
 
 export default function Footer() {
   return (
     <footer className="w-full flex flex-col mt-20 relative">
+      {/* Features/Guarantee Strip */}
+      <div className="bg-amazon-dark border-b border-white/10 relative z-20">
+        <div className="max-w-[1200px] mx-auto py-6 px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="w-12 h-12 rounded-full bg-amazon-orange/10 flex items-center justify-center group-hover:bg-amazon-orange/20 transition-colors">
+              <Truck className="text-amazon-orange group-hover:scale-110 transition-transform" size={24} />
+            </div>
+            <div>
+              <h4 className="text-white font-outfit font-semibold text-sm">Fast Delivery</h4>
+              <p className="text-gray-400 text-xs">All across Bangladesh</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="w-12 h-12 rounded-full bg-amazon-orange/10 flex items-center justify-center group-hover:bg-amazon-orange/20 transition-colors">
+              <ShieldCheck className="text-amazon-orange group-hover:scale-110 transition-transform" size={24} />
+            </div>
+            <div>
+              <h4 className="text-white font-outfit font-semibold text-sm">Secure Payment</h4>
+              <p className="text-gray-400 text-xs">100% secure payment</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="w-12 h-12 rounded-full bg-amazon-orange/10 flex items-center justify-center group-hover:bg-amazon-orange/20 transition-colors">
+              <CreditCard className="text-amazon-orange group-hover:scale-110 transition-transform" size={24} />
+            </div>
+            <div>
+              <h4 className="text-white font-outfit font-semibold text-sm">Easy Returns</h4>
+              <p className="text-gray-400 text-xs">7 Days return policy</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 group cursor-pointer">
+            <div className="w-12 h-12 rounded-full bg-amazon-orange/10 flex items-center justify-center group-hover:bg-amazon-orange/20 transition-colors">
+              <HeadphonesIcon className="text-amazon-orange group-hover:scale-110 transition-transform" size={24} />
+            </div>
+            <div>
+              <h4 className="text-white font-outfit font-semibold text-sm">24/7 Support</h4>
+              <p className="text-gray-400 text-xs">Dedicated support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Decorative Top Gradient Border */}
-      <div className="h-1 w-full bg-gradient-to-r from-transparent via-amazon-orange to-transparent opacity-70"></div>
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-amazon-orange to-transparent opacity-50 relative z-20"></div>
       
       {/* Back to top - Premium Button */}
-      <div className="bg-amazon-light/95 backdrop-blur-sm relative z-10">
-        <a href="#" className="flex flex-col items-center justify-center text-white text-center py-5 hover:bg-amazon-light-hover w-full transition-colors group">
+      <div className="bg-amazon-light/95 backdrop-blur-sm relative z-10 border-b border-white/5">
+        <a href="#" className="flex flex-col items-center justify-center text-white text-center py-4 hover:bg-amazon-light-hover w-full transition-colors group">
           <ChevronUp size={20} className="text-amazon-orange group-hover:-translate-y-1 transition-transform" />
-          <span className="text-sm font-semibold tracking-wide uppercase mt-1">Back to top</span>
+          <span className="text-xs font-semibold tracking-wider uppercase mt-1">Back to top</span>
         </a>
       </div>
 
@@ -20,111 +87,125 @@ export default function Footer() {
         {/* Subtle Background Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-amazon-orange/5 blur-[120px] rounded-full pointer-events-none"></div>
         
-        <div className="max-w-[1200px] mx-auto grid grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 relative z-10">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 relative z-10">
           
-          <div className="flex flex-col gap-4">
-            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-8 after:h-[2px] after:bg-amazon-orange">Get to Know Us</h3>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Careers</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Blog</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>About JontroGhor</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Investor Relations</Link>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-8 after:h-[2px] after:bg-amazon-orange">Make Money with Us</h3>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Sell products</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Sell on Business</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Sell apps</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Become an Affiliate</Link>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-8 after:h-[2px] after:bg-amazon-orange">Payment Products</h3>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Business Card</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Shop with Points</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Reload Balance</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Currency Converter</Link>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-8 after:h-[2px] after:bg-amazon-orange">Let Us Help You</h3>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Your Account</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Your Orders</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Shipping Rates</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Returns & Replacements</Link>
-            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Help</Link>
-          </div>
-
-          <div className="flex flex-col gap-4 col-span-2 lg:col-span-1">
-            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-8 after:h-[2px] after:bg-amazon-orange">Our Stores</h3>
-            <div className="text-sm text-gray-400">
-              <strong className="text-white block mb-1">JontroGhor Banani</strong>
-              House 72, Road No. 11<br/>
-              South Breeze Housing Limited<br/>
-              Dhaka 1213
-            </div>
-            <div className="text-sm text-gray-400 mt-2">
-              <strong className="text-white">Phone:</strong> 01335-069851<br/>
-              <strong className="text-white">Hours:</strong> 9:30 AM - 9:00 PM
-            </div>
-          </div>
-
-        </div>
-
-        {/* Unique Newsletter Section */}
-        <div className="max-w-[900px] mx-auto mt-16 p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md relative overflow-hidden group">
-          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-amazon-orange/20 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-700"></div>
-          <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-700"></div>
-          
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-xl font-outfit font-bold text-white mb-2 flex items-center justify-center md:justify-start gap-2">
-                <Mail className="text-amazon-orange" size={24} />
-                Join the JontroGhor Insider
-              </h3>
-              <p className="text-sm text-gray-400">Get the latest tech news, exclusive offers, and early access to new gadgets.</p>
-            </div>
-            <div className="w-full md:w-auto flex items-center gap-2">
-              <div className="relative w-full md:w-64">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="w-full bg-white/10 border border-white/20 rounded-full py-2.5 pl-4 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-amazon-orange focus:ring-1 focus:ring-amazon-orange transition-all text-sm"
-                />
-              </div>
-              <button className="bg-amazon-orange text-black rounded-full p-2.5 hover:bg-[#e89115] hover:scale-105 transition-all flex-shrink-0 group/btn">
-                <Send size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Social Links & Branding */}
-        <div className="max-w-[1200px] mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
-          <div className="flex items-center gap-2">
-             <Link href="/" className="font-outfit font-black text-2xl tracking-tighter">
+          {/* Column 1: About & Contact */}
+          <div className="flex flex-col gap-5">
+            <Link href="/" className="font-outfit font-black text-3xl tracking-tighter inline-block mb-2">
               <span className="text-white">Jontro</span>
               <span className="text-amazon-orange">Ghor</span>
             </Link>
+            <p className="text-sm text-gray-400 leading-relaxed mb-2">
+              Your trusted destination for premium electronics, gadgets, and tech accessories in Bangladesh. Experience shopping like never before.
+            </p>
+            <div className="flex flex-col gap-3 mt-2">
+              <div className="flex items-start gap-3 group">
+                <MapPin className="text-amazon-orange mt-0.5 group-hover:scale-110 transition-transform shrink-0" size={18} />
+                <span className="text-sm text-gray-300">House 72, Road No. 11, South Breeze Housing Limited, Banani, Dhaka 1213</span>
+              </div>
+              <div className="flex items-center gap-3 group">
+                <Phone className="text-amazon-orange group-hover:scale-110 transition-transform shrink-0" size={18} />
+                <span className="text-sm text-gray-300">01335-069851 (9:30 AM - 9:00 PM)</span>
+              </div>
+              <div className="flex items-center gap-3 group">
+                <Mail className="text-amazon-orange group-hover:scale-110 transition-transform shrink-0" size={18} />
+                <span className="text-sm text-gray-300">support@jontroghor.com</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><Facebook size={18} className="group-hover/social:scale-110 transition-transform" /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><Twitter size={18} className="group-hover/social:scale-110 transition-transform" /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><Instagram size={18} className="group-hover/social:scale-110 transition-transform" /></a>
-            <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><Youtube size={18} className="group-hover/social:scale-110 transition-transform" /></a>
+
+          {/* Column 2: Customer Care */}
+          <div className="flex flex-col gap-4">
+            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-10 after:h-[2px] after:bg-amazon-orange">Customer Care</h3>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Help Center</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>How to Buy</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Returns & Refunds</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Track Your Order</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Corporate & Bulk Purchasing</Link>
+          </div>
+
+          {/* Column 3: Quick Links */}
+          <div className="flex flex-col gap-4">
+            <h3 className="font-outfit font-bold text-lg mb-2 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-10 after:h-[2px] after:bg-amazon-orange">Quick Links</h3>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>About JontroGhor</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Terms & Conditions</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Privacy Policy</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Sell on JontroGhor</Link>
+            <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group"><span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>Store Locator</Link>
+          </div>
+
+          {/* Column 4: Newsletter & Apps */}
+          <div className="flex flex-col gap-6">
+            <div>
+              <h3 className="font-outfit font-bold text-lg mb-4 relative inline-block after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-10 after:h-[2px] after:bg-amazon-orange">Newsletter</h3>
+              <p className="text-xs text-gray-400 mb-3">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+              <div className="flex items-center gap-2">
+                <input 
+                  type="email" 
+                  placeholder="Your email address" 
+                  className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-3 pr-3 text-white placeholder-gray-500 focus:outline-none focus:border-amazon-orange focus:bg-white/10 transition-all text-sm"
+                />
+                <button className="bg-amazon-orange text-black rounded-lg p-2 hover:bg-[#e89115] transition-all flex-shrink-0 group/btn h-[38px] w-[38px] flex items-center justify-center">
+                  <Send size={16} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                </button>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-outfit font-bold text-sm mb-3">Download Our App</h3>
+              <div className="flex gap-3">
+                <a href="#" className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 hover:bg-white/10 transition-colors">
+                  <div className="w-6 h-6 flex items-center justify-center"><Smartphone size={18} className="text-white" /></div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-gray-400 uppercase tracking-wider leading-none">Get it on</span>
+                    <span className="text-xs font-semibold text-white leading-tight">Google Play</span>
+                  </div>
+                </a>
+                <a href="#" className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 hover:bg-white/10 transition-colors">
+                   <div className="w-6 h-6 flex items-center justify-center"><Smartphone size={18} className="text-white" /></div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-gray-400 uppercase tracking-wider leading-none">Download on the</span>
+                    <span className="text-xs font-semibold text-white leading-tight">App Store</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Methods & Socials */}
+        <div className="max-w-[1200px] mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col lg:flex-row items-center justify-between gap-6 relative z-10">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+            <span className="text-sm font-semibold text-white">Payment Methods:</span>
+            <div className="flex items-center gap-3 flex-wrap justify-center">
+               {/* Simulating Payment Icons */}
+               <div className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-black text-blue-800 italic">VISA</div>
+               <div className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-bold text-red-600">MasterCard</div>
+               <div className="h-8 px-3 bg-[#E2136E] flex items-center justify-center rounded text-xs font-bold text-white">bKash</div>
+               <div className="h-8 px-3 bg-[#EC1C24] flex items-center justify-center rounded text-xs font-bold text-white">Nagad</div>
+               <div className="h-8 px-3 bg-gray-200 flex items-center justify-center rounded text-xs font-bold text-black border border-gray-300">COD</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+             <span className="text-sm font-semibold text-white mr-2">Follow Us:</span>
+            <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><FacebookIcon size={16} className="group-hover/social:scale-110 transition-transform" /></a>
+            <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><TwitterIcon size={16} className="group-hover/social:scale-110 transition-transform" /></a>
+            <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><InstagramIcon size={16} className="group-hover/social:scale-110 transition-transform" /></a>
+            <a href="#" className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-amazon-orange hover:text-black transition-colors group/social"><YoutubeIcon size={16} className="group-hover/social:scale-110 transition-transform" /></a>
           </div>
         </div>
       </div>
 
-      {/* Bottom Footer - Minimalist */}
-      <div className="bg-[#0f141a] text-gray-400 flex flex-col items-center py-8 px-4">
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-4 text-xs font-medium">
-          <Link href="#" className="hover:text-white hover:underline transition-colors">Conditions of Use</Link>
-          <Link href="#" className="hover:text-white hover:underline transition-colors">Privacy Notice</Link>
-          <Link href="#" className="hover:text-white hover:underline transition-colors">Consumer Health Data</Link>
-          <Link href="#" className="hover:text-white hover:underline transition-colors">Your Ads Privacy Choices</Link>
+      {/* Bottom Footer - Minimalist Copyright */}
+      <div className="bg-[#0b0f14] text-gray-500 py-6 px-4 flex flex-col md:flex-row items-center justify-between">
+        <div className="max-w-[1200px] mx-auto w-full flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="text-xs">© 2026 JontroGhor.com. All Rights Reserved.</span>
+          <div className="flex gap-4 text-xs">
+            <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <span className="text-gray-700">|</span>
+            <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+          </div>
         </div>
-        <span className="text-xs">© 2026, JontroGhor.com, Inc. or its affiliates. All rights reserved.</span>
       </div>
     </footer>
   );
