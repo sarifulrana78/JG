@@ -1,37 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# JontroGhor — Premium E-Commerce Platform
+
+> Your ultimate destination for gadgets, fashion, and lifestyle products in Bangladesh.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16.x-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://typescriptlang.org)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748)](https://prisma.io)
+
+---
+
+## Features
+
+- 3D Interactive UI powered by Three.js
+- Secure authentication with Better Auth
+- Persistent cart with Zustand state management
+- bKash, Nagad, VISA, MasterCard, and COD payment support
+- Full product management via Prisma ORM
+- Premium dark theme with glassmorphism effects
+- Fully responsive mobile-friendly design
 
 ## Getting Started
 
-First, run the development server:
-
-```bash
+`ash
+git clone https://github.com/sarifulrana78/JG.git
+cd JG/jontroghor-app
+npm install
+cp .env.example .env
+npx prisma migrate dev
+npx prisma db seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Category  | Technology                   |
+|-----------|------------------------------|
+| Framework | Next.js 16 (App Router)      |
+| Language  | TypeScript                   |
+| Styling   | Tailwind CSS v4              |
+| 3D        | Three.js, @react-three/fiber |
+| Animation | Framer Motion                |
+| State     | Zustand                      |
+| Database  | Prisma ORM + PostgreSQL      |
+| Auth      | Better Auth                  |
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+`env
+DATABASE_URL=postgresql://user:password@localhost:5432/jontroghor
+BETTER_AUTH_SECRET=your-secret-key
+BETTER_AUTH_URL=http://localhost:3000
+`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# JG
+MIT (c) 2026 JontroGhor. All rights reserved.
