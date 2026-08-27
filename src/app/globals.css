@@ -3,6 +3,7 @@
 @theme {
   --color-amazon-dark: #131921;
   --color-amazon-light: #232f3e;
+  --color-amazon-light-hover: #2c3e50;
   --color-amazon-orange: #febd69;
   --color-amazon-orange-hover: #f3a847;
   --color-amazon-blue: #007185;
@@ -13,12 +14,28 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-white text-slate-900 font-inter antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-outfit font-bold tracking-tight;
+  }
+
+  /* Custom text selection highlight */
+  ::selection {
+    background-color: rgba(254, 189, 105, 0.3);
+    color: #131921;
+  }
+
+  /* Focus ring for accessibility */
+  :focus-visible {
+    outline: 2px solid #febd69;
+    outline-offset: 2px;
   }
 }
 
@@ -30,5 +47,29 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-}
 
+  /* Gradient text utility */
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #febd69, #f3a847);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Glow effect for orange elements */
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(254, 189, 105, 0.3);
+  }
+
+  .glow-orange-hover:hover {
+    box-shadow: 0 0 30px rgba(254, 189, 105, 0.5);
+  }
+}
