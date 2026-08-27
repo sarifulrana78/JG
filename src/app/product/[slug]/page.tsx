@@ -3,8 +3,31 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ProductDetailsClient from "@/components/ProductDetailsClient";
+import type { Metadata } from "next";
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+type Params = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await prisma.product.findUnique({
+    where: { slug },
+    select: { name: true, description: true, images: true },
+  });
+
+  if (!product) return { title: "Product Not Found" };
+
+  return {
+    title: product.name,
+    description: product.description ?? `Buy ${product.name} at the best price on JontroGhor.`,
+    openGraph: {
+      title: `${product.name} | JontroGhor`,
+      description: product.description ?? `Buy ${product.name} at JontroGhor.`,
+      images: product.images[0] ? [{ url: product.images[0] }] : [],
+    },
+  };
+}
+
+export default async function ProductPage({ params }: Params) {
   const { slug } = await params;
   
   const product = await prisma.product.findUnique({
