@@ -3,6 +3,8 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { Heart } from "lucide-react";
+import { useWishlistStore } from "@/lib/store";
 
 export default function ProductCard3D({
   title,
@@ -23,6 +25,9 @@ export default function ProductCard3D({
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const { toggleWishlist, isWishlisted } = useWishlistStore();
+  const wishlisted = isWishlisted(slug);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -53,6 +58,23 @@ export default function ProductCard3D({
         }}
         className="relative h-96 w-full rounded-2xl bg-white shadow-xl border border-slate-100 p-6 flex flex-col justify-between cursor-pointer group"
       >
+        {/* Wishlist button */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist({ id: slug, name: title, price: parseFloat(price.replace('$','')), image, slug });
+          }}
+          style={{ transform: "translateZ(60px)" }}
+          className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-md border border-slate-100 hover:border-red-300 transition-all z-10"
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart
+            size={16}
+            className={wishlisted ? "fill-red-500 text-red-500" : "text-slate-400 hover:text-red-400"}
+          />
+        </button>
+
         <div
           style={{
             transform: "translateZ(50px)",
