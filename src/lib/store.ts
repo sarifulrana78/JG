@@ -10,6 +10,14 @@ export interface CartItem {
   slug: string;
 }
 
+export interface WishlistItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  slug: string;
+}
+
 interface CartStore {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
@@ -18,6 +26,13 @@ interface CartStore {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+}
+
+interface WishlistStore {
+  wishlistItems: WishlistItem[];
+  toggleWishlist: (item: WishlistItem) => void;
+  isWishlisted: (id: string) => boolean;
+  clearWishlist: () => void;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -72,6 +87,33 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'jontroghor-cart',
+    }
+  )
+);
+
+export const useWishlistStore = create<WishlistStore>()(
+  persist(
+    (set, get) => ({
+      wishlistItems: [],
+
+      toggleWishlist: (item) => {
+        const { wishlistItems } = get();
+        const exists = wishlistItems.find((i) => i.id === item.id);
+        if (exists) {
+          set({ wishlistItems: wishlistItems.filter((i) => i.id !== item.id) });
+        } else {
+          set({ wishlistItems: [...wishlistItems, item] });
+        }
+      },
+
+      isWishlisted: (id) => {
+        return get().wishlistItems.some((i) => i.id === id);
+      },
+
+      clearWishlist: () => set({ wishlistItems: [] }),
+    }),
+    {
+      name: 'jontroghor-wishlist',
     }
   )
 );
