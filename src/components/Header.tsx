@@ -48,10 +48,15 @@ export default function Header() {
           <select className="bg-transparent text-gray-300 group-focus-within:text-black text-sm px-4 outline-none border-r border-white/20 group-focus-within:border-gray-200 cursor-pointer transition-colors font-medium">
             <option className="text-black">All</option>
             <option className="text-black">Gadgets</option>
+            <option className="text-black">Smartphones</option>
+            <option className="text-black">Laptops</option>
+            <option className="text-black">Headphones</option>
+            <option className="text-black">Gaming</option>
             <option className="text-black">Fashion</option>
             <option className="text-black">Lifestyle</option>
             <option className="text-black">Gifts</option>
             <option className="text-black">Stationery</option>
+            <option className="text-black">Wearables</option>
           </select>
           <input 
             type="text" 
