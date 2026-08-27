@@ -3,8 +3,15 @@
 import { useCartStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CreditCard, Truck, ShieldCheck, ChevronRight } from "lucide-react";
+import { CreditCard, Truck, ShieldCheck, ChevronRight, Tag, X } from "lucide-react";
 import Image from "next/image";
+
+// Demo promo codes
+const PROMO_CODES: Record<string, number> = {
+  JONTRO10: 0.10,
+  SAVE20: 0.20,
+  WELCOME15: 0.15,
+};
 
 export default function CheckoutPage() {
   const { cartItems, getTotalPrice, clearCart } = useCartStore();
@@ -12,6 +19,24 @@ export default function CheckoutPage() {
   const router = useRouter();
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; discount: number } | null>(null);
+  const [promoError, setPromoError] = useState("");
+
+  const applyPromo = () => {
+    const disc = PROMO_CODES[promoCode.trim().toUpperCase()];
+    if (disc) {
+      setAppliedPromo({ code: promoCode.toUpperCase(), discount: disc });
+      setPromoError("");
+    } else {
+      setPromoError("Invalid promo code. Try JONTRO10 or SAVE20.");
+      setAppliedPromo(null);
+    }
+  };
+
+  const subtotal = getTotalPrice();
+  const discountAmount = appliedPromo ? subtotal * appliedPromo.discount : 0;
+  const finalTotal = subtotal - discountAmount;
 
   useEffect(() => {
     setIsMounted(true);
@@ -151,11 +176,39 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              <div className="flex flex-col gap-3 pt-6 border-t border-white/10 text-sm text-gray-300">
+              {/* Promo Code */}
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-1"><Tag size={14} className="text-amazon-orange" /> Promo Code</p>
+                {appliedPromo ? (
+                  <div className="flex items-center justify-between bg-green-500/10 border border-green-500/30 rounded-xl px-3 py-2">
+                    <span className="text-green-400 text-sm font-bold">{appliedPromo.code} — {(appliedPromo.discount * 100).toFixed(0)}% off</span>
+                    <button onClick={() => setAppliedPromo(null)} className="text-gray-400 hover:text-red-400 transition-colors"><X size={14} /></button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      value={promoCode}
+                      onChange={(e) => { setPromoCode(e.target.value); setPromoError(""); }}
+                      placeholder="Enter code"
+                      className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-amazon-orange transition-colors"
+                    />
+                    <button onClick={applyPromo} className="px-3 py-2 bg-amazon-orange hover:bg-amazon-orange-hover text-black text-sm font-bold rounded-xl transition-colors">Apply</button>
+                  </div>
+                )}
+                {promoError && <p className="text-red-400 text-xs mt-1">{promoError}</p>}
+              </div>
+
+              <div className="flex flex-col gap-3 pt-4 border-t border-white/10 mt-4 text-sm text-gray-300">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="text-white font-medium">${getTotalPrice().toFixed(2)}</span>
+                  <span className="text-white font-medium">${subtotal.toFixed(2)}</span>
                 </div>
+                {appliedPromo && (
+                  <div className="flex justify-between text-green-400">
+                    <span>Discount ({(appliedPromo.discount * 100).toFixed(0)}%)</span>
+                    <span>-${discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span className="text-green-400 font-medium">Free</span>
@@ -164,7 +217,7 @@ export default function CheckoutPage() {
 
               <div className="flex justify-between items-end pt-6 mt-4 border-t border-white/10">
                 <span className="text-lg font-bold">Total</span>
-                <span className="text-3xl font-black text-white">${getTotalPrice().toFixed(2)}</span>
+                <span className="text-3xl font-black text-white">${finalTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
