@@ -5,10 +5,13 @@ import { PrismaPg } from '@prisma/adapter-pg'
 
 const connectionString = `${process.env.DATABASE_URL}`
 
-const pool = new Pool({ connectionString })
-const adapter = new PrismaPg(pool)
+const globalForPrisma = globalThis as unknown as {
+  prisma?: PrismaClient
+  pool?: Pool
+}
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient }
+const pool = globalForPrisma.pool ?? new Pool({ connectionString })
+const adapter = new PrismaPg(pool)
 
 /**
  * Singleton Prisma client.
@@ -16,7 +19,7 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient }
  * exhausting the connection pool during Next.js hot reloads.
  */
 export const prisma =
-  globalForPrisma.prisma ||
+  globalForPrisma.prisma ??
   new PrismaClient({
     adapter,
     log:
@@ -27,4 +30,5 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
+  globalForPrisma.pool = pool
 }
