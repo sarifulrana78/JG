@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AppModals from "@/components/AppModals";
+import ToastContainer from "@/components/ToastContainer";
 
 export const metadata: Metadata = {
   title: {
@@ -54,10 +56,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="antialiased selection:bg-amazon-orange selection:text-black">
         <Header />
         <main>{children}</main>
         <Footer />
+        <AppModals />
+        <ToastContainer />
       </body>
     </html>
   );
