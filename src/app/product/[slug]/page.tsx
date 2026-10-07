@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: Params) {
       <div className="bg-white/5 border-b border-white/10 text-sm py-4 px-6 flex items-center gap-2 text-gray-400 backdrop-blur-md">
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <ChevronRight size={14} className="opacity-50" />
-        <Link href="#" className="hover:text-white transition-colors">{product.category.name}</Link>
+        <Link href="/#products" className="hover:text-amazon-orange transition-colors">{product.category.name}</Link>
         <ChevronRight size={14} className="opacity-50" />
         <span className="text-white truncate font-medium">{product.name}</span>
       </div>

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useCartStore } from "@/lib/store";
-import { MapPin, Lock, ShoppingCart, CreditCard } from "lucide-react";
+import { useCartStore, useUIStore } from "@/lib/store";
+import { MapPin, Lock, ShoppingCart, CreditCard, Check, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -19,29 +19,47 @@ interface Product {
 }
 
 export default function ProductDetailsClient({ product }: { product: Product }) {
-  const [activeImage, setActiveImage] = useState(product.images[0]);
+  const [activeImage, setActiveImage] = useState(product.images[0] || "/placeholder.png");
   const [quantity, setQuantity] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
+  const { openModal, addToast, deliveryLocation } = useUIStore();
   const router = useRouter();
 
   const handleAddToCart = () => {
+    if (!product.inStock) return;
+
     addToCart({
       id: product.id,
       name: product.name,
       price: product.price,
       quantity,
-      image: product.images[0],
-      slug: product.slug
+      image: product.images[0] || "/placeholder.png",
+      slug: product.slug,
     });
+
+    setIsAdded(true);
+    addToast({
+      message: `${quantity}x ${product.name} added to cart! 🛒`,
+      type: "success",
+      actionLabel: "View Cart",
+      actionHref: "/cart",
+    });
+
+    setTimeout(() => {
+      setIsAdded(false);
+    }, 2000);
   };
 
   const handleBuyNow = () => {
+    if (!product.inStock) return;
+
     handleAddToCart();
-    router.push('/checkout');
+    router.push("/checkout");
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-12 mt-8">
+    <div className="flex flex-col md:flex-row gap-12 mt-8 font-outfit">
       {/* LEFT COLUMN: Images */}
       <div className="md:w-[50%] flex gap-6">
         {/* Thumbnails */}
@@ -49,8 +67,13 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
           {product.images.map((img, idx) => (
             <button 
               key={idx} 
+              type="button"
               onClick={() => setActiveImage(img)}
-              className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 ${activeImage === img ? 'border-amazon-orange scale-105 shadow-[0_0_15px_rgba(254,189,105,0.4)]' : 'border-white/10 hover:border-white/30 opacity-60 hover:opacity-100'}`}
+              className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                activeImage === img 
+                  ? 'border-amazon-orange scale-105 shadow-[0_0_15px_rgba(254,189,105,0.4)]' 
+                  : 'border-white/10 hover:border-white/30 opacity-60 hover:opacity-100'
+              }`}
             >
                <div className="relative w-full h-full bg-white/5">
                  <Image src={img} alt="Thumbnail" fill className="object-cover p-2" />
@@ -79,10 +102,18 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
       {/* RIGHT COLUMN: Details & Actions */}
       <div className="md:w-[50%] flex flex-col">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <h1 className="text-4xl md:text-5xl font-black text-white leading-tight font-outfit">{product.name}</h1>
+          <h1 className="text-4xl md:text-5xl font-black text-white leading-tight">{product.name}</h1>
           <div className="flex items-center gap-4 mt-4 pb-6 border-b border-white/10">
-            <div className="flex text-amazon-orange text-lg">★★★★<span className="text-gray-600">★</span></div>
-            <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">1,245 reviews</span>
+            <button
+              type="button"
+              onClick={() => openModal("reviews", { product })}
+              className="flex items-center gap-2 group cursor-pointer"
+            >
+              <div className="flex text-amazon-orange text-lg">★★★★★</div>
+              <span className="text-gray-400 text-sm group-hover:text-amazon-orange transition-colors underline underline-offset-4">
+                1,245 reviews
+              </span>
+            </button>
           </div>
         </motion.div>
 
@@ -95,7 +126,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
               </div>
             )}
           </div>
-          <div className="text-sm text-gray-400 mt-2">Inclusive of all taxes. Free shipping available.</div>
+          <div className="text-sm text-gray-400 mt-2">Inclusive of all taxes. Free shipping available across Bangladesh.</div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6">
@@ -111,37 +142,79 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
             <div className={`text-lg font-bold ${product.inStock ? "text-green-400" : "text-red-400"}`}>
               {product.inStock ? "● In Stock" : "● Out of Stock"}
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <MapPin size={16} /> Delivery by <strong className="text-white">Tomorrow</strong>
-            </div>
+            <button
+              type="button"
+              onClick={() => openModal("location")}
+              className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+              title="Change location"
+            >
+              <MapPin size={16} className="text-amazon-orange" /> Deliver to <strong className="text-white underline">{deliveryLocation}</strong>
+            </button>
           </div>
 
           <div className="flex items-center gap-4 mb-6">
              <span className="text-gray-300 font-medium">Quantity</span>
              <div className="flex items-center bg-black/40 rounded-lg border border-white/10 overflow-hidden">
-               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 py-2 hover:bg-white/10 text-white transition-colors">-</button>
+               <button 
+                type="button"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))} 
+                className="px-4 py-2 hover:bg-white/10 text-white transition-colors cursor-pointer"
+                disabled={!product.inStock}
+               >
+                 -
+               </button>
                <span className="w-10 text-center font-bold">{quantity}</span>
-               <button onClick={() => setQuantity(quantity + 1)} className="px-4 py-2 hover:bg-white/10 text-white transition-colors">+</button>
+               <button 
+                type="button"
+                onClick={() => setQuantity(quantity + 1)} 
+                className="px-4 py-2 hover:bg-white/10 text-white transition-colors cursor-pointer"
+                disabled={!product.inStock}
+               >
+                 +
+               </button>
              </div>
           </div>
 
           <div className="flex flex-col gap-3">
             <button 
+              type="button"
               onClick={handleAddToCart}
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 w-full py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+              disabled={!product.inStock}
+              className={`w-full py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                !product.inStock
+                  ? "bg-gray-700/50 text-gray-500 cursor-not-allowed border border-gray-700"
+                  : isAdded
+                  ? "bg-green-600 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]"
+                  : "bg-white/10 hover:bg-white/20 text-white border border-white/20"
+              }`}
             >
-              <ShoppingCart size={20} /> Add to Cart
+              {isAdded ? (
+                <>
+                  <Check size={20} className="stroke-[3]" /> Added to Cart!
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={20} /> {product.inStock ? "Add to Cart" : "Out of Stock"}
+                </>
+              )}
             </button>
+
             <button 
+              type="button"
               onClick={handleBuyNow}
-              className="bg-amazon-orange hover:bg-amazon-orange-hover text-black w-full py-4 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(254,189,105,0.3)] hover:shadow-[0_0_30px_rgba(254,189,105,0.5)] flex items-center justify-center gap-2"
+              disabled={!product.inStock}
+              className={`w-full py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
+                !product.inStock
+                  ? "bg-gray-800 text-gray-600 cursor-not-allowed"
+                  : "bg-amazon-orange hover:bg-amazon-orange-hover text-black shadow-[0_0_20px_rgba(254,189,105,0.3)] hover:shadow-[0_0_30px_rgba(254,189,105,0.5)] cursor-pointer"
+              }`}
             >
               <CreditCard size={20} /> Buy Now
             </button>
           </div>
 
           <div className="flex items-center justify-center gap-2 text-gray-500 text-xs mt-6">
-            <Lock size={14} /> Secure transaction processing
+            <Lock size={14} /> 256-bit SSL encrypted secure checkout
           </div>
         </motion.div>
       </div>
