@@ -5,6 +5,7 @@ import { OrbitControls, Stars, Float } from "@react-three/drei";
 import { useRef, Suspense } from "react";
 import * as THREE from "three";
 import Link from "next/link";
+import { useUIStore } from "@/lib/store";
 
 function FloatingGadget() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -56,18 +57,18 @@ function FloatingRing() {
   );
 }
 
-/** Loading skeleton shown while Three.js initializes */
-function HeroSkeleton() {
-  return (
-    <div className="absolute inset-0 bg-slate-900 flex items-center justify-center">
-      <div className="w-24 h-24 rounded-full border-4 border-amazon-orange/30 border-t-amazon-orange animate-spin" />
-    </div>
-  );
-}
-
 export default function Hero3D() {
+  const { setActiveCategory } = useUIStore();
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="relative w-full h-[85vh] min-h-[600px] bg-slate-900 overflow-hidden flex items-center justify-center">
+    <div className="relative w-full h-[85vh] min-h-[600px] bg-slate-900 overflow-hidden flex items-center justify-center font-outfit">
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 8], fov: 45 }} shadows>
           <ambientLight intensity={0.3} />
@@ -84,25 +85,30 @@ export default function Hero3D() {
       </div>
       
       <div className="relative z-10 text-center max-w-4xl px-6 pointer-events-none">
-        <h1 className="text-5xl md:text-7xl font-outfit font-black text-white tracking-tighter mb-6 leading-tight">
+        <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-6 leading-tight">
           The Future of <span className="text-gradient-orange">E-Commerce</span> is Here
         </h1>
         <p className="text-lg md:text-2xl text-slate-300 font-medium mb-10 max-w-2xl mx-auto">
           Discover premium gadgets and modern fashion trends with a breathtaking immersive experience.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
-          <Link 
-            href="/#products"
-            className="px-8 py-4 bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold rounded-full transition-all text-lg shadow-xl hover:-translate-y-1 glow-orange"
+          <button 
+            type="button"
+            onClick={() => {
+              setActiveCategory("all");
+              scrollToSection("products");
+            }}
+            className="px-8 py-4 bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold rounded-full transition-all text-lg shadow-xl hover:-translate-y-1 glow-orange cursor-pointer"
           >
             Start Shopping
-          </Link>
-          <Link 
-            href="/#categories"
-            className="px-8 py-4 bg-transparent border-2 border-white hover:border-amazon-orange hover:text-amazon-orange text-white font-bold rounded-full transition-all text-lg"
+          </button>
+          <button 
+            type="button"
+            onClick={() => scrollToSection("categories")}
+            className="px-8 py-4 bg-transparent border-2 border-white hover:border-amazon-orange hover:text-amazon-orange text-white font-bold rounded-full transition-all text-lg cursor-pointer"
           >
             Explore Offers
-          </Link>
+          </button>
         </div>
       </div>
     </div>
