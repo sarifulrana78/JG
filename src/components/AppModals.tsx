@@ -48,6 +48,44 @@ export default function AppModals() {
     closeModal();
   };
 
+  const handleTrackOrder = () => {
+    const q = orderQuery.trim();
+    if (!q) {
+      if (recentOrders.length > 0) {
+        setOrderQuery(recentOrders[0].orderId);
+        addToast({ message: `Tracking recent order #${recentOrders[0].orderId} (${recentOrders[0].status}) 🚚`, type: "info" });
+      } else {
+        addToast({ message: "Please enter an Order ID to track shipment.", type: "warning" });
+      }
+      return;
+    }
+    const match = recentOrders.find((o) => o.orderId.toLowerCase() === q.toLowerCase());
+    if (match) {
+      addToast({ message: `Order #${match.orderId}: ${match.status} — Total: $${match.total.toFixed(2)}`, type: "success" });
+    } else {
+      addToast({ message: `Tracking order #${q}: In transit with express courier 🚚`, type: "info" });
+    }
+  };
+
+  const handleAppNotify = () => {
+    if (!appEmail.trim() || !appEmail.includes("@")) {
+      addToast({ message: "Please enter a valid email address.", type: "warning" });
+      return;
+    }
+    setAppSubscribed(true);
+    addToast({ message: `VIP early access invitation requested for ${appEmail}! 🎉`, type: "success" });
+  };
+
+  const handleSubmitReview = () => {
+    if (!newReviewText.trim()) {
+      addToast({ message: "Please enter your review feedback first.", type: "warning" });
+      return;
+    }
+    setReviewSubmitted(true);
+    addToast({ message: `Thank you! Your ${newReviewRating}-star review was posted successfully ⭐`, type: "success" });
+    setNewReviewText("");
+  };
+
   const bangladeshCities = [
     "Dhaka", "Chittagong", "Sylhet", "Rajshahi", "Khulna", 
     "Barishal", "Rangpur", "Mymensingh", "Gazipur", "Narayanganj", "Cumilla"
@@ -172,15 +210,15 @@ export default function AppModals() {
                   placeholder="Enter Order ID (e.g. JG-849201)"
                   value={orderQuery}
                   onChange={(e) => setOrderQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleTrackOrder();
+                  }}
                   className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amazon-orange font-mono"
                 />
                 <button
-                  onClick={() => {
-                    if (orderQuery) {
-                      addToast({ message: `Tracking order #${orderQuery}: Package is currently in transit! 🚚`, type: "info" });
-                    }
-                  }}
-                  className="bg-amazon-orange hover:bg-amazon-orange-hover text-black px-5 py-2.5 rounded-xl font-bold text-sm transition-colors"
+                  type="button"
+                  onClick={handleTrackOrder}
+                  className="bg-amazon-orange hover:bg-amazon-orange-hover text-black px-5 py-2.5 rounded-xl font-bold text-sm transition-colors cursor-pointer"
                 >
                   Track
                 </button>
@@ -559,17 +597,16 @@ export default function AppModals() {
                       type="email"
                       value={appEmail}
                       onChange={(e) => setAppEmail(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleAppNotify();
+                      }}
                       placeholder="Enter your email"
                       className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amazon-orange"
                     />
                     <button
-                      onClick={() => {
-                        if (appEmail) {
-                          setAppSubscribed(true);
-                          addToast({ message: "Subscribed to app release alerts! 🎉", type: "success" });
-                        }
-                      }}
-                      className="bg-amazon-orange hover:bg-amazon-orange-hover text-black px-4 py-2.5 rounded-xl font-bold text-xs transition-colors"
+                      type="button"
+                      onClick={handleAppNotify}
+                      className="bg-amazon-orange hover:bg-amazon-orange-hover text-black px-4 py-2.5 rounded-xl font-bold text-xs transition-colors cursor-pointer"
                     >
                       Notify Me
                     </button>
@@ -640,13 +677,9 @@ export default function AppModals() {
                     className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amazon-orange"
                   />
                   <button
-                    onClick={() => {
-                      if (newReviewText) {
-                        setReviewSubmitted(true);
-                        addToast({ message: "Review posted successfully! ⭐", type: "success" });
-                      }
-                    }}
-                    className="w-full bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold py-2.5 rounded-xl text-xs transition-colors"
+                    type="button"
+                    onClick={handleSubmitReview}
+                    className="w-full bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold py-2.5 rounded-xl text-xs transition-colors cursor-pointer"
                   >
                     Submit Review
                   </button>
@@ -790,6 +823,133 @@ export default function AppModals() {
                 )}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* 12. ABOUT JONTROGHor */}
+        {activeModal === "about" && (
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-amazon-orange/10 flex items-center justify-center text-amazon-orange">
+                <Store size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold font-outfit">About JontroGhor</h3>
+                <p className="text-xs text-gray-400">Bangladesh's premier 3D e-commerce experience for tech enthusiasts.</p>
+              </div>
+            </div>
+
+            <div className="space-y-4 text-xs text-gray-300 leading-relaxed max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <h4 className="font-bold text-white text-sm">Our Mission</h4>
+                <p>
+                  JontroGhor was founded with a single mission: to revolutionize how Bangladesh shops for authentic technology, gaming gear, and modern workspace essentials with high-fidelity 3D visualization and uncompromised customer service.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                  <span className="font-black text-amazon-orange text-lg">100%</span>
+                  <p className="font-bold text-white text-xs mt-1">Authentic Products</p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Sourced directly from verified global manufacturers.</p>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10">
+                  <span className="font-black text-green-400 text-lg">24-48h</span>
+                  <p className="font-bold text-white text-xs mt-1">Fast Delivery</p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Express nationwide courier across all 64 districts.</p>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <h4 className="font-bold text-white text-sm">Experience Center</h4>
+                <p>
+                  Visit our flagship store in Banani, Dhaka to touch, test, and try out mechanical keyboards, mice, audio monitors, and desk accessories before you buy.
+                </p>
+                <p className="text-amazon-orange font-mono text-[11px]">House 72, Road 11, Banani, Dhaka 1213</p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  closeModal();
+                  const el = document.getElementById("products");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="flex-1 bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold py-3 rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Explore Products Now
+              </button>
+              <button
+                type="button"
+                onClick={closeModal}
+                className="px-5 bg-white/10 hover:bg-white/15 text-white font-medium py-3 rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 13. PAYMENT METHODS & SECURITY */}
+        {activeModal === "payment-methods" && (
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-400">
+                <ShieldCheck size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold font-outfit">Payment Methods & Security</h3>
+                <p className="text-xs text-gray-400">100% secure, transparent, and hassle-free payment options in Bangladesh.</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 text-xs max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0 font-bold text-xs">
+                  bKash
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-sm">bKash & Nagad (Instant Mobile Banking)</h4>
+                  <p className="text-gray-400 mt-1 leading-relaxed">
+                    Pay securely using direct merchant payment or app QR code. Instant payment verification with zero extra processing fee.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 font-bold text-sm">
+                  💳
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-sm">Visa & MasterCard (Credit / Debit)</h4>
+                  <p className="text-gray-400 mt-1 leading-relaxed">
+                    Protected by 256-bit SSL encryption and 3D Secure 2-factor OTP verification. Up to 12 months 0% EMI available on selected bank cards.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center shrink-0 font-bold text-sm">
+                  💵
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-sm">Cash on Delivery (COD)</h4>
+                  <p className="text-gray-400 mt-1 leading-relaxed">
+                    Pay cash to the delivery courier at your doorstep after inspecting the sealed packaging. Available nationwide across all 64 districts.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={closeModal}
+              className="mt-6 w-full bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold py-3 rounded-xl text-xs transition-colors cursor-pointer"
+            >
+              Got it
+            </button>
           </div>
         )}
       </motion.div>
