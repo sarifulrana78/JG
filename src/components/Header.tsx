@@ -306,11 +306,16 @@ export default function Header() {
             type="button"
             onClick={() => {
               setActiveCategory("all");
+              setSearchQuery("");
               const el = document.getElementById("products");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth" });
+              } else {
+                router.push("/#products");
+              }
               addToast({ message: "Viewing Today's Deals! ⚡", type: "info" });
             }}
-            className="hover:text-amazon-orange transition-colors py-2 cursor-pointer"
+            className="hover:text-amazon-orange transition-colors py-2 cursor-pointer font-semibold"
           >
             Today's Deals
           </button>
