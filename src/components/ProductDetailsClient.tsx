@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useCartStore, useUIStore } from "@/lib/store";
-import { MapPin, Lock, ShoppingCart, CreditCard, Check, Star } from "lucide-react";
+import { useCartStore, useUIStore, useWishlistStore } from "@/lib/store";
+import { MapPin, Lock, ShoppingCart, CreditCard, Check, Star, Heart, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -23,8 +23,11 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const addToCart = useCartStore((state) => state.addToCart);
+  const { toggleWishlist, isWishlisted } = useWishlistStore();
   const { openModal, addToast, deliveryLocation } = useUIStore();
   const router = useRouter();
+
+  const wishlisted = isWishlisted(product.slug);
 
   const handleAddToCart = () => {
     if (!product.inStock) return;
@@ -211,6 +214,49 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
             >
               <CreditCard size={20} /> Buy Now
             </button>
+
+            {/* Quick Wishlist and Share */}
+            <div className="flex gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  toggleWishlist({
+                    id: product.slug,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images[0] || "/placeholder.png",
+                    slug: product.slug,
+                  });
+                  addToast({
+                    message: wishlisted ? `Removed from wishlist` : `Added ${product.name} to wishlist! ❤️`,
+                    type: wishlisted ? "info" : "success",
+                  });
+                }}
+                className={`flex-1 py-3 px-4 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition-all cursor-pointer ${
+                  wishlisted
+                    ? "bg-red-500/10 border-red-500/40 text-red-400"
+                    : "bg-white/5 border-white/10 text-gray-300 hover:bg-white/10"
+                }`}
+                title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                <Heart size={16} className={wishlisted ? "fill-red-500 text-red-500" : ""} />
+                {wishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    navigator.clipboard.writeText(window.location.href);
+                    addToast({ message: "Product link copied to clipboard! 📋", type: "success" });
+                  }
+                }}
+                className="py-3 px-4 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 flex items-center justify-center gap-2 text-xs font-bold transition-all cursor-pointer"
+                title="Share product link"
+              >
+                <Share2 size={16} /> Share
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center justify-center gap-2 text-gray-500 text-xs mt-6">
