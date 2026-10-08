@@ -203,7 +203,7 @@ export const useUIStore = create<UIStore>()(
               name: 'Pro Wireless Gaming Mouse',
               price: 129.99,
               quantity: 1,
-              image: 'https://images.unsplash.com/photo-1527219525722-f9767a7af8c8?w=500&q=80',
+              image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80',
               slug: 'pro-wireless-gaming-mouse',
             },
           ],

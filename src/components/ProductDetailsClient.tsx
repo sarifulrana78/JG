@@ -79,7 +79,16 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
               }`}
             >
                <div className="relative w-full h-full bg-white/5">
-                 <Image src={img} alt="Thumbnail" fill className="object-cover p-2" />
+                 <Image 
+                   src={img} 
+                   alt="Thumbnail" 
+                   fill 
+                   sizes="80px"
+                   className="object-cover p-2" 
+                   onError={(e) => {
+                     (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80";
+                   }}
+                 />
                </div>
             </button>
           ))}
@@ -96,7 +105,17 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
               transition={{ duration: 0.3 }}
               className="relative w-full h-full"
             >
-              <Image src={activeImage} alt={product.name} fill className="object-contain p-10 drop-shadow-2xl" />
+              <Image 
+                src={activeImage} 
+                alt={product.name} 
+                fill 
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain p-10 drop-shadow-2xl" 
+                onError={() => {
+                  setActiveImage("https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80");
+                }}
+              />
             </motion.div>
           </AnimatePresence>
         </div>

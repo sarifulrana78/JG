@@ -70,7 +70,7 @@ export default function Hero3D() {
   return (
     <div className="relative w-full h-[85vh] min-h-[600px] bg-slate-900 overflow-hidden flex items-center justify-center font-outfit">
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 8], fov: 45 }} shadows>
+        <Canvas camera={{ position: [0, 0, 8], fov: 45 }} shadows="percentage">
           <ambientLight intensity={0.3} />
           <pointLight position={[10, 10, 10]} intensity={2} color="#febd69" castShadow />
           <pointLight position={[-10, -10, -10]} intensity={1} color="#007185" />

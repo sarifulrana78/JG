@@ -90,7 +90,16 @@ export default function CartPage() {
                   className="bg-white/5 border border-white/10 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row gap-6 relative"
                 >
                   <Link href={`/product/${item.slug}`} className="w-full sm:w-32 h-32 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center relative overflow-hidden group shrink-0">
-                    <Image src={item.image} alt={item.name} fill className="object-contain p-2 group-hover:scale-110 transition-transform duration-500" />
+                    <Image 
+                      src={item.image} 
+                      alt={item.name} 
+                      fill 
+                      sizes="128px"
+                      className="object-contain p-2 group-hover:scale-110 transition-transform duration-500" 
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80";
+                      }}
+                    />
                   </Link>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>

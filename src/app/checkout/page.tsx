@@ -394,7 +394,16 @@ export default function CheckoutPage() {
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex gap-4">
                     <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-lg relative overflow-hidden shrink-0 flex items-center justify-center">
-                      <Image src={item.image} alt={item.name} fill className="object-contain p-1" />
+                      <Image 
+                        src={item.image} 
+                        alt={item.name} 
+                        fill 
+                        sizes="64px"
+                        className="object-contain p-1" 
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80";
+                        }}
+                      />
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-semibold line-clamp-2">{item.name}</div>

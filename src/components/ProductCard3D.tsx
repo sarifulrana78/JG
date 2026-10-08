@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, Check, ShoppingCart } from "lucide-react";
 import { useWishlistStore, useCartStore, useUIStore } from "@/lib/store";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ProductCard3D({
   title,
@@ -31,8 +31,15 @@ export default function ProductCard3D({
   const { addToCart } = useCartStore();
   const { addToast } = useUIStore();
   const [isAdded, setIsAdded] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [imgSrc, setImgSrc] = useState(image);
 
-  const wishlisted = isWishlisted(slug);
+  useEffect(() => {
+    setMounted(true);
+    setImgSrc(image);
+  }, [image]);
+
+  const wishlisted = mounted && isWishlisted(slug);
   const numericPrice = parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -129,8 +136,17 @@ export default function ProductCard3D({
           }}
           className="w-full h-48 bg-slate-100 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden"
         >
-          {image ? (
-            <Image src={image} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+          {imgSrc ? (
+            <Image 
+              src={imgSrc} 
+              alt={title} 
+              fill 
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500" 
+              onError={() => {
+                setImgSrc("https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80");
+              }}
+            />
           ) : (
             <div className="text-slate-400 font-medium">3D Tilt Image</div>
           )}
