@@ -226,8 +226,8 @@ export default function Footer() {
 
             <button 
               type="button" 
-              onClick={() => openModal("terms")} 
-              className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group text-left"
+              onClick={() => openModal("about")} 
+              className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-2 group text-left cursor-pointer"
             >
               <span className="w-0 h-[1px] bg-amazon-orange group-hover:w-3 transition-all"></span>About JontroGhor
             </button>
@@ -335,11 +335,11 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
             <span className="text-sm font-semibold text-white">Payment Methods:</span>
             <div className="flex items-center gap-3 flex-wrap justify-center">
-               <button onClick={() => openModal("customer-service")} className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-black text-blue-800 italic hover:scale-105 transition-transform">VISA</button>
-               <button onClick={() => openModal("customer-service")} className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-bold text-red-600 hover:scale-105 transition-transform">MasterCard</button>
-               <button onClick={() => openModal("customer-service")} className="h-8 px-3 bg-[#E2136E] flex items-center justify-center rounded text-xs font-bold text-white hover:scale-105 transition-transform">bKash</button>
-               <button onClick={() => openModal("customer-service")} className="h-8 px-3 bg-[#EC1C24] flex items-center justify-center rounded text-xs font-bold text-white hover:scale-105 transition-transform">Nagad</button>
-               <button onClick={() => openModal("customer-service")} className="h-8 px-3 bg-gray-200 flex items-center justify-center rounded text-xs font-bold text-black border border-gray-300 hover:scale-105 transition-transform">COD</button>
+               <button type="button" onClick={() => openModal("payment-methods")} className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-black text-blue-800 italic hover:scale-105 transition-transform cursor-pointer" title="Visa Payment Info">VISA</button>
+               <button type="button" onClick={() => openModal("payment-methods")} className="h-8 px-3 bg-white flex items-center justify-center rounded text-xs font-bold text-red-600 hover:scale-105 transition-transform cursor-pointer" title="MasterCard Payment Info">MasterCard</button>
+               <button type="button" onClick={() => openModal("payment-methods")} className="h-8 px-3 bg-[#E2136E] flex items-center justify-center rounded text-xs font-bold text-white hover:scale-105 transition-transform cursor-pointer" title="bKash Payment Info">bKash</button>
+               <button type="button" onClick={() => openModal("payment-methods")} className="h-8 px-3 bg-[#EC1C24] flex items-center justify-center rounded text-xs font-bold text-white hover:scale-105 transition-transform cursor-pointer" title="Nagad Payment Info">Nagad</button>
+               <button type="button" onClick={() => openModal("payment-methods")} className="h-8 px-3 bg-gray-200 flex items-center justify-center rounded text-xs font-bold text-black border border-gray-300 hover:scale-105 transition-transform cursor-pointer" title="Cash on Delivery Info">COD</button>
             </div>
           </div>
           <div className="flex items-center gap-3">
