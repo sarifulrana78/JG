@@ -2,7 +2,7 @@
 
 import { useUIStore } from "@/lib/store";
 import ProductCard3D from "./ProductCard3D";
-import { ChevronRight, Filter, X, Sparkles } from "lucide-react";
+import { Filter, X, Sparkles } from "lucide-react";
 
 interface ProductItem {
   id: string;
@@ -29,20 +29,88 @@ export default function ProductCatalog({
 
   const allProducts = [...initialProducts, ...initialMoreProducts];
 
+  // Helper function to normalize search term and handle plurals / synonyms
+  const getSearchTokens = (query: string): string[] => {
+    const clean = query.trim().toLowerCase();
+    if (!clean) return [];
+
+    const tokens = [clean];
+    // Plural / singular normalization
+    if (clean.endsWith("ies")) {
+      tokens.push(clean.slice(0, -3) + "y");
+    } else if (clean.endsWith("s") && clean.length > 3) {
+      tokens.push(clean.slice(0, -1));
+    }
+
+    // Common synonyms in tech e-commerce
+    if (clean.includes("mice") || clean.includes("mouse")) {
+      tokens.push("mouse", "mice");
+    }
+    if (clean.includes("headset") || clean.includes("headphone") || clean.includes("earphone") || clean.includes("audio")) {
+      tokens.push("headset", "headphone", "audio");
+    }
+    if (clean.includes("keyboard")) {
+      tokens.push("keyboard", "mechanical");
+    }
+    if (clean.includes("monitor") || clean.includes("screen") || clean.includes("display")) {
+      tokens.push("monitor", "display", "screen");
+    }
+    if (clean.includes("desk") || clean.includes("table")) {
+      tokens.push("desk", "table", "workspace");
+    }
+    if (clean.includes("lighting") || clean.includes("light") || clean.includes("lamp")) {
+      tokens.push("light", "lamp", "screenbar");
+    }
+    if (clean.includes("chair")) {
+      tokens.push("chair", "esports");
+    }
+    if (clean.includes("toy") || clean.includes("plush")) {
+      tokens.push("toy", "plush", "companion");
+    }
+    if (clean.includes("perfume") || clean.includes("fragrance") || clean.includes("candle")) {
+      tokens.push("perfume", "candle", "aroma", "diffuser");
+    }
+    if (clean.includes("stationery") || clean.includes("notebook") || clean.includes("journal")) {
+      tokens.push("stationery", "journal", "planner", "notebook");
+    }
+    if (clean.includes("gift") || clean.includes("box")) {
+      tokens.push("gift", "box", "pouch");
+    }
+    if (clean.includes("wearable") || clean.includes("watch") || clean.includes("band")) {
+      tokens.push("watch", "wearable", "band", "smartwatch");
+    }
+
+    return Array.from(new Set(tokens));
+  };
+
   // Filter products based on activeCategory and searchQuery
   const filteredProducts = allProducts.filter((p) => {
-    // Category match
+    const catSlug = p.category?.slug?.toLowerCase() || "";
+    const catName = p.category?.name?.toLowerCase() || "";
+    const prodName = p.name.toLowerCase();
+    const prodDesc = p.description.toLowerCase();
+
+    // Category match logic
     const categoryMatches =
       activeCategory === "all" ||
-      (p.category && p.category.slug.toLowerCase().includes(activeCategory.toLowerCase())) ||
-      p.name.toLowerCase().includes(activeCategory.toLowerCase()) ||
-      p.description.toLowerCase().includes(activeCategory.toLowerCase());
+      catSlug.includes(activeCategory.toLowerCase()) ||
+      catName.includes(activeCategory.toLowerCase()) ||
+      prodName.includes(activeCategory.toLowerCase()) ||
+      prodDesc.includes(activeCategory.toLowerCase());
 
-    // Search query match
-    const searchMatches =
-      !searchQuery.trim() ||
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase());
+    // Search query match logic with synonym expansion
+    if (!searchQuery.trim()) {
+      return categoryMatches;
+    }
+
+    const tokens = getSearchTokens(searchQuery);
+    const searchMatches = tokens.some(
+      (token) =>
+        prodName.includes(token) ||
+        prodDesc.includes(token) ||
+        catSlug.includes(token) ||
+        catName.includes(token)
+    );
 
     return categoryMatches && searchMatches;
   });
@@ -51,7 +119,10 @@ export default function ProductCatalog({
     { label: "All Items", key: "all" },
     { label: "Gaming", key: "gaming" },
     { label: "Gadgets", key: "gadgets" },
-    { label: "Audio & Headphones", key: "headphones" },
+    { label: "Workspace", key: "workspace" },
+    { label: "Lifestyle", key: "lifestyle" },
+    { label: "Wearables", key: "wearables" },
+    { label: "Audio", key: "headphones" },
     { label: "Cameras", key: "camera" },
   ];
 
@@ -124,7 +195,7 @@ export default function ProductCatalog({
           <button
             type="button"
             onClick={clearFilters}
-            className="px-6 py-2.5 rounded-full bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold text-xs transition-colors"
+            className="px-6 py-2.5 rounded-full bg-amazon-orange hover:bg-amazon-orange-hover text-black font-bold text-xs transition-colors cursor-pointer"
           >
             Show All Products
           </button>
