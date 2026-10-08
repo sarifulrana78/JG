@@ -55,13 +55,17 @@ export default function CategoryCard3D({
 
   const handleCategoryAction = () => {
     if (comingSoon) {
-      addToast({ message: "Wearables & Smartwatches collection launching soon! ⌚", type: "info" });
+      addToast({ message: `${title} collection launching soon! ⌚ Join VIP early access.`, type: "info" });
       openModal("app-download");
       return;
     }
 
+    // Reset specific search query when picking whole category so user sees all items
+    setSearchQuery("");
+    
     if (categoryKey) {
       setActiveCategory(categoryKey.toLowerCase());
+      addToast({ message: `Exploring ${title} collection 🌟`, type: "info" });
     } else {
       setActiveCategory("all");
     }
@@ -73,12 +77,32 @@ export default function CategoryCard3D({
   };
 
   const handleItemClick = (label: string) => {
-    setSearchQuery(label);
+    if (categoryKey) {
+      setActiveCategory(categoryKey.toLowerCase());
+    }
+
+    // Map label to optimal search term
+    let searchTerm = label;
+    if (label.toLowerCase() === "mice") searchTerm = "Mouse";
+    if (label.toLowerCase() === "keyboards") searchTerm = "Keyboard";
+    if (label.toLowerCase() === "headsets") searchTerm = "Headset";
+    if (label.toLowerCase() === "chairs") searchTerm = "Chair";
+    if (label.toLowerCase() === "desks") searchTerm = "Desk";
+    if (label.toLowerCase() === "monitors") searchTerm = "Monitor";
+    if (label.toLowerCase() === "lighting") searchTerm = "Light";
+    if (label.toLowerCase() === "storage") searchTerm = "Storage";
+    if (label.toLowerCase() === "soft toys") searchTerm = "Plush";
+    if (label.toLowerCase() === "perfumes") searchTerm = "Aroma";
+    if (label.toLowerCase() === "stationery") searchTerm = "Notebook";
+    if (label.toLowerCase() === "gifts") searchTerm = "Gift";
+
+    setSearchQuery(searchTerm);
+
     const el = document.getElementById("products");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
-    addToast({ message: `Filtering products for "${label}"`, type: "info" });
+    addToast({ message: `Filtering ${title} for "${label}" 🔍`, type: "info" });
   };
 
   return (
@@ -114,6 +138,7 @@ export default function CategoryCard3D({
               style={{ transform: "translateZ(20px)" }}
               onClick={handleCategoryAction}
               className="bg-black/30 flex-1 rounded-xl flex flex-col items-center justify-center border border-white/5 z-10 pointer-events-auto cursor-pointer hover:bg-black/40 transition-colors"
+              title="Click to get notified"
             >
               <span className="text-3xl mb-2">⌚</span>
               <span className="text-amazon-orange font-bold text-sm">Coming Soon</span>
