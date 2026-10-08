@@ -3,6 +3,7 @@
 import { useCartStore, useUIStore } from "@/lib/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { CreditCard, Truck, ShieldCheck, ChevronRight, Tag, X, Check, Smartphone, Banknote } from "lucide-react";
 import Image from "next/image";
 
