@@ -93,8 +93,11 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-[#0f141a] text-white py-12 px-4 sm:px-6 font-outfit">
       <div className="max-w-[1200px] mx-auto">
-        <div className="flex items-center gap-2 text-sm text-gray-500 mb-8 font-medium">
-          <span>Cart</span> <ChevronRight size={14} /> <span className="text-white">Checkout</span>
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-8 font-medium">
+          <Link href="/cart" className="hover:text-amazon-orange transition-colors cursor-pointer">
+            Cart
+          </Link>{" "}
+          <ChevronRight size={14} /> <span className="text-white font-bold">Checkout</span>
         </div>
         
         <h1 className="text-3xl font-black mb-8">Secure Checkout</h1>
@@ -107,9 +110,33 @@ export default function CheckoutPage() {
               
               {/* Shipping Address */}
               <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2 border-b border-white/10 pb-4">
-                  <Truck className="text-amazon-orange" /> Shipping Information
-                </h2>
+                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <Truck className="text-amazon-orange" /> Shipping Information
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFirstName("Rana");
+                      setLastName("Bhai");
+                      setAddress("House 72, Road 11, Banani");
+                      setCity("Dhaka");
+                      setPhone("01711000000");
+                      if (paymentMethod === "card") {
+                        setCardNumber("4242 4242 4242 4242");
+                        setCardExpiry("12/28");
+                        setCardCvc("789");
+                      } else if (paymentMethod === "bkash") {
+                        setBkashNumber("01711000000");
+                        setBkashTrxId("BL92KJ7P");
+                      }
+                      addToast({ message: "Sample address & details filled in! ⚡", type: "info" });
+                    }}
+                    className="text-xs text-amazon-orange hover:underline font-bold cursor-pointer"
+                  >
+                    ⚡ Autofill Sample Info
+                  </button>
+                </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
